@@ -1,0 +1,31 @@
+Week 2 Diary Entry 03/02-09/02
+
+Following a meeting with Supervisor on Tuesday 04/02/25, the project has been changed to a game related project.
+The lack of punctuality of responses from UKAEA may become an issue if the previous project was carried on.
+
+Due to illness, I was absent from this weeks group tutorial
+
+Tasks from Last week
+1.  Title: Press UKAEA for more details.
+Description: Receive a more workable project description from UKAEA
+Status: Cancelled. 
+
+2. Title: Choose a methodology
+Description: Find a workflow and methodology for working on the project, for example, Kanban.
+Status: Complete.
+I'm somewhat familiar with the Kanban methodology from my year in industry so I'll be using that one.
+
+3. Title: Look into the Project Outline
+Description: A difficult task to complete without completing task 1.
+Status: Submitted
+The project outline has been submitted and added to the documentation section of the repository.
+
+New Tasks:
+1. Title: Send Bernie a link to the Git repository
+Description: House keeping
+
+2. Title: Produce document of System tests
+Description: A document of tests that ensure the relevant rules from the Lancer game have been faithfully recreated.
+
+3. Title: Setup Unity Project
+Description: This is a housekeeping task to ensure there's "Something" in the repository
