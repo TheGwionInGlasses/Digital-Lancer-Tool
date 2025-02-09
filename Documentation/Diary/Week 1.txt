@@ -1,0 +1,16 @@
+Week 1 Diary
+
+Group meeting with Bernie 09/02/2025
+
+Outstanding issues:
+Receive functional requirements and data format from UKAEA
+
+Actions to Take:
+1.  Title: Press UKAEA for more details.
+Description: Receive a more workable project description from UKAEA
+
+2. Title: Choose a methodology
+Description: Find a workflow and methodology for working on the project, for example, Kanban.
+
+3. Title: Look into the Project Outline
+Description: A difficult task to complete without completing task 1.
