@@ -1,0 +1,40 @@
+Week 4 Diary Entry 17/02-23/02
+
+Due to my car being broken down and stranded in Pembrokeshire, I couldn't attend the group meeting. I suggested we could do an individual meeting
+if Bernie wanted to check in but no response.
+
+Less work done this week since it was my birthday.
+
+Tasks from Last Week:
+
+1. Follow along Udemy Course
+Description: Use this to help inform the design of the game https://www.udemy.com/course/unity-turn-based-strategy/
+Status: Incomplete
+This has been an incredibly useful project. It's taught me how to use singletons to interact with code in prefabs which should make my code more modular.
+I've also adopted the approach from this project to keep the UI and the logic separate for the grid. I can use a custom grid object to draw a grid over
+a tile map with textures. I've abstracted the location logic, i.e, transform position, into a more manageable gridposition struct. A class like GridObject
+could help keep track of gameobjects occupying positions on the grid and I could potentially use an invisible gameobject marker that the players can't see but
+the grid recognises to indicate terrain types. I think this is preferable to having that kind of logic in the tilemap which I just want to use for visual.
+Another method might be to access the tile on the tilemap and infer the type of terrain based on that. I'll have to look into this.
+Either way, I've got agents that can roam a quad plane freely, but are not snapping to a grid.
+Since this is all spikework, I haven't uploaded it to the repository.
+Hours Worked: 15
+
+2 Produce System Tests Document
+Description: A system Test document to determine the completeness of game code.
+Status: Incomplete
+No work has been done in this area. I've focussed on the spikework this week.
+Hours Worked: 0
+
+New Tasks:
+
+1 Title: Prepare for Ethics Form
+Description: Research Ethics Form requirements
+
+Continue Task:
+
+Continue Task:
+1. Produce System Tests Document
+It's really important I complete this before I start putting code to production.
+
+Total Hours Worked: 15
