@@ -1,0 +1,29 @@
+Week 3 Diary Entry 10/02-16/02
+
+Tasks from Last Week:
+
+1. Title: Send Bernie a link to the Git repository
+Description: House keeping
+Status: Complete
+Git repository setup alongside a workboard. I looked up some GitHub references to setting up workboards for projects and added the required labels to the Repository.
+
+2. Title: Produce document of System tests
+Description: A document of tests that ensure the relevant rules from the Lancer game have been faithfully recreated.
+Status: Incomplete
+I've made System tests for the movement rules of Lancer. This covers the broad range of terrain types and their interactions with the agents.
+
+3. Title: Setup Unity Project
+Description: This is a housekeeping task to ensure there's "Something" in the repository
+Status: Complete
+I've setup an empty Unity project with the 2D pipeline renderer. Alongside this, I've covered some of the Unity owned tutorial projects such as the ball game and the 2D adventure game.
+This has helped me figure out the UI and the do some spikework into how Tilesystems work. As this is spikework, I won't upload it to GitHub.
+There's a limit to these learning projects though and I've found a much more helpful course on Udemy which goes over how to build the different components of a squad based strategy game.
+https://www.udemy.com/course/unity-turn-based-strategy/
+
+New Tasks:
+1. Follow along Udemy Course
+Description: I think this course will be a good source of information judging my the course structure. I should gather insights into how to create the agents, moves, and pathfinding.
+
+Continue Task:
+1. Produce System Tests Document
+It's really important I complete this before I start putting code to production.
