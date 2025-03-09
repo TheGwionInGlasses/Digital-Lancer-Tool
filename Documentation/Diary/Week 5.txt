@@ -1,0 +1,59 @@
+Week 4 Diary Entry 24/02-02/03
+
+Attended Group Tutorial 1 hour.
+
+I've volunteered to demonstrate some of the Spike work I've been doing in the next Group Tutorial on the 03/03.
+
+Tasks from Last Week:
+
+1. Follow along Udemy Course
+Description: Use this to help inform the design of the game https://www.udemy.com/course/unity-turn-based-strategy/
+Status: Incomplete
+I've learnt a few things. I can make a unit prefab and a unit variant prefab and both can have potentially different components and behaviour.
+One of my suggested features was an "auto-battle" feature, so a simple AI. Emphasis on Simple. I've got some insights into how to do this.
+For moving, the ai looks at its possible moves as a surface and chooses the highest "peak" based on a score derived from the number of enemies it
+can attack from that position. This would be a problematic method for enemies that only have a knife and would result in them roaming most likely but
+logic is there now and it can be changed.
+I can use an abstract class to represent the possible "actions" an agent can take. I'm thinking of representing components as actions, i.e, this component
+add this action. I would have a base action class which contain in them the logic they need to execute the action. I can simplify the logic in the Unit action system
+by enforcing all public Action moves are virtual. Only the action really needs to know how it works, what grid positions work for it, and so forth.
+As for the UI, there's still some work that needs to be done. the setup I have now is experimental. Just a button generated per move component attached to the agent(benefit of abstracting move logic).
+I think I might not have time to figure out how to represent elevation. I've considered using a 2.5D grid, but it might take time away from other components of this project to implement.
+I've been using EventHandlers a lot. I think this undermines the code a little since it exposes the sender object in the code and with a little refactoring, it might not be necessary.
+However the upside of EventHandlers is that I can update the UI from the logic by making a UI component subscribe to an event. It's better than continually running the UI on the Update function and therefore is
+more performant.
+Hours Worked: 21
+
+2 Produce System Tests Document
+Description: A system Test document to determine the completeness of game code.
+Status: Incomplete
+No work has been done in this area. I've focussed on the spikework this week.
+
+3 Title: Prepare for Ethics Form
+Description: I'm pretty confident I don't have to be too worried about this.
+Status: Complete
+Hours Worked: 1
+
+Extra Tasks Completed this Week:
+
+1 Title: Mid Project Demonstration
+Description: I've highlighted the times I can't do the mid project demonstration
+
+New Tasks:
+
+1 Title: Fulfill Ethics Form
+Description: Submit the Ethics Requirement Form.
+
+2 Title: Get back on top of Kanban
+Description: I haven't been keeping on top of updating the Kanban work board with the ongoing tasks. I should make sure I'm at least doing that.
+
+3. Title: SpikeWork demonstration
+Description: I volunteered to show what Spikework I've been doing. It's a good opportunity to get feedback. 
+
+Continue Task:
+
+Continue Task:
+1. Produce System Tests Document
+It's really important I complete this before I start putting code to production.
+
+Total Hours Worked: 22
