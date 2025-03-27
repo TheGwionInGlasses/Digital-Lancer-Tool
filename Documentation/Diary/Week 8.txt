@@ -1,0 +1,32 @@
+Week 8 Diary Entry 17/02-23/03
+
+Absent from Group Tutorial due to illness.
+
+1. Follow along Udemy Course
+Description: Use this to help inform the design of the game https://www.udemy.com/course/unity-turn-based-strategy/
+Status: complete
+I'm using a multi level grid system for my game. This involves instantiating a grid system for every "level". This would allow for flying units in the future. I've created a pathlink object for searching for pathnodes between layers. It inherits from the UnityEditor so it can be used in the unity game engine editor.
+There was yet another annoying bug with the offset in which I mistakenly added the offset to the altitude leading to some out of bounds bugs. I really aught to comment my code before I refactor and add to production. But all in all, I'm happy with the state of the spikework and think it should be refactored and added to the main repository now.
+Hours worked: 21
+
+2 Produce System Tests Document
+Description: A system Test document to determine the completeness of game code.
+Status: Incomplete
+I have four agent templates I can add into the game. I might create system tests for each specific agent like I would with chess. However this could get complicated. I'll see how much time I can make for it.
+
+1. Create a hexagonal column asset
+Description: Create an asset for unity that would be helpful for level design
+Status: Incomplete.
+
+New Tasks:
+
+1. Refactor Spike Work and add it to the main repository.
+Description: [Title]
+
+Continue Task:
+
+1. Create a hexagonal column asset
+Description: Create an asset for unity that would be helpful for level design
+
+2. Produce System Tests Document
+This is quite complete. Still there's more that can be added before I refactor my code to add to production.
