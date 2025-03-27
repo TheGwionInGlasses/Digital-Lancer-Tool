@@ -1,0 +1,27 @@
+Week 7 Diary Entry 10/02-16/03
+
+1. Follow along Udemy Course
+Description: Use this to help inform the design of the game https://www.udemy.com/course/unity-turn-based-strategy/
+Status: Incomplete
+Ahead of my mid project demonstration, I added a few features that improved the look of the game. For instance, I added a bullet effect with the shoot action. The bullet leaves a trail. I've included a unit animator script for handling the animation of each action. There an event in the base action that the Unit animator script is subscribed to. This is fired for every action and all the unit animator needs to know for handling the event is the type of the sender. This has neatly kept the action logic isolated from the animation logic.
+I've created a generic sword action and grenade. I believe what I will end up doing is changing the action class to a component class. Each component in Lancer with uses a point of the agents action will be included in this generic component class. The grenade action is a stand in for a more generic area of attack action. Currently it uses a physics ball of a certain dimension to find all the agents within a range. It should be possible to highlight the area it will effect such as in Xcom, but that might be a stretch goal for later.
+Hours worked: 21
+
+2 Produce System Tests Document
+Description: A system Test document to determine the completeness of game code.
+Status: Incomplete
+I have four agent templates I can add into the game. I might create system tests for each specific agent like I would with chess. However this could get complicated. I'll see how much time I can make for it.
+
+3. Mid Project Demonstration
+Description: A mid project demonstration worth 5% of the grade.
+I demonstrated my work to David. We discussed how using a terrain might not be the best approach and it could be simpler to just create a hexagonal column in blender and use that asset to make floors.
+
+New Tasks:
+
+1. Create a hexagonal column asset
+Description: Create an asset for unity that would be helpful for level design
+
+Continue Task:
+1. Produce System Tests Document
+This is quite complete. Still there's more that can be added before I refactor my code to add to production.
+
