@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
-
+/// <summary>
+/// This class is a singleton contains the logic for the turn system.
+/// </summary>
 public class TurnSystem : MonoBehaviour
 {
     public static TurnSystem Instance { get; private set; }
@@ -21,11 +23,15 @@ public class TurnSystem : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// This method is used to change update the turn.
+    /// On completion of this method, there's an event to subscribe to for any logic that needs to be executed on turn change
+    /// such as refreshing the agents action economy.
+    /// </summary>
     public void NextTurn()
     {
         turnNumber++;
         isPlayerTurn = !isPlayerTurn;
-        Debug.Log(isPlayerTurn);
 
         OnTurnChanged?.Invoke(this, EventArgs.Empty);
     }

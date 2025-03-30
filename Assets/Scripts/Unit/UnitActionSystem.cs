@@ -2,10 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// This class manages a singleton object for the Unit Action system. It keeps track of the selected action and unit.
+/// </summary>
 public class UnitActionSystem : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     public static UnitActionSystem Instance { get; private set; }
     
 

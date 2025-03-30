@@ -3,6 +3,9 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class models the overlay above agents that display a healthbar and their remaining action points.
+/// </summary>
 public class UnitWorldUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI actionPointsText;

@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The spin action. My fist action. I refuse to do without it.
+/// </summary>
 public class SpinAction : BaseAction
 {
     private float totalSpinAmount;

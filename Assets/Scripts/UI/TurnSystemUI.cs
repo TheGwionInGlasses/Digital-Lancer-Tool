@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
+/// <summary>
+/// This class models the frontend behaviour for the TurnSystem UI. It is the player view of the Backend TurnSystem class.
+/// </summary>
 public class TurnSystemUI : MonoBehaviour
 {
     [SerializeField] private Button endTurnButton;

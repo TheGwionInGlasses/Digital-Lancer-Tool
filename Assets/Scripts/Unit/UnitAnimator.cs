@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// The UnitAnimator class manages the agents animations through a series of listeners to events. Usually
+/// this is listeners to an actions OnActionStarted() and OnActionComplete() functions.
+/// </summary>
 public class UnitAnimator : MonoBehaviour
 {
     [SerializeField] private Animator animator;

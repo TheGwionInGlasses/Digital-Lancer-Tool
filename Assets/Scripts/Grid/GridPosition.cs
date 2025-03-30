@@ -1,8 +1,10 @@
-
-
 using System;
-using UnityEngine;
 
+/// <summary>
+/// This struct models a coordinate in the coordinate space of the level grid or pathfinding grid. Since both of these hexagonal grids
+/// use the offset odd row system, the grid position tracks two axis on a flat grid.
+/// Contained in this struct is the logic operating on these structs.
+/// </summary>
 public struct GridPosition : IEquatable<GridPosition>
 {
     public int x;

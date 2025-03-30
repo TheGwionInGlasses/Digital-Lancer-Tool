@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// This class <c>ScreenShakeActions</c> is contains the logic for when to shake the screen.
+/// </summary>
 public class ScreenShakeActions : MonoBehaviour
 {
     private void Start()

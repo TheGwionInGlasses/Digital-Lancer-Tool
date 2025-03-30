@@ -1,10 +1,12 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using TMPro;
 
+/// <summary>
+/// This Class models the action button container which displays the action buttons for each action a unit can take
+/// and the action points they have remaining.
+/// </summary>
 public class UnitActionSystemUI : MonoBehaviour
 {
     [SerializeField] private Transform actionButtonPrefab;
@@ -30,6 +32,11 @@ public class UnitActionSystemUI : MonoBehaviour
         UpdateActionPoints();
     }
 
+    /// <summary>
+    /// When an agent is selected, destroy the existing buttons in the action button container and then
+    /// instantiate a new button for every BaseAction class component attached to the agent.
+    /// This relies on all the actions in the agent being a child to the BaseAction class.
+    /// </summary>
     private void CreateUnitActionButton()
     {
         foreach (Transform buttonTranform in actionButtonContainer)

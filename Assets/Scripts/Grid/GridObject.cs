@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using UnityEngine;
 
+/// <summary>
+/// This class represents a single grid position on the hexagonal grid. It tracks its own coordinates as well as any
+/// agents positioned over this grid object.
+/// </summary>
 public class GridObject
 {
     private GridSystemHex<GridObject> gridSystem;

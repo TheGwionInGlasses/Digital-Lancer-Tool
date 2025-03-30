@@ -1,6 +1,9 @@
-using UnityEditor.Search;
 using UnityEngine;
 
+/// <summary>
+/// This class controls the behaviour for the panel that hides the agents buttons on the player view.
+/// It manages the logic of when to hide and show this panel.
+/// </summary>
 public class ActionBusyUI : MonoBehaviour
 {
     [SerializeField] private GameObject actionBusyUI;

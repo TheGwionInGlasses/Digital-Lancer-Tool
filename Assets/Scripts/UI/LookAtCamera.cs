@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// This class <c>Look At Camera</c> is a component attached to FrontEndGUI objects that need to face the level grid camera.
+/// </summary>
 public class LookAtCamera : MonoBehaviour
 {
     [SerializeField] private bool invert;

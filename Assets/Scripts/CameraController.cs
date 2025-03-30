@@ -1,6 +1,9 @@
 using UnityEngine;
 using Cinemachine;
 
+/// <summary>
+/// Class <c>CameraController</c> is a component attached to the CameraController unity object and handles camera movement across the scene.
+/// </summary>
 public class CameraController : MonoBehaviour
 {
     private const float MIN_FOLLOW_Y_OFFSET = 2f;
@@ -19,10 +22,13 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         HandleMovement();
-        HandleRoation();
-        HandleZoon();
+        HandleRotation();
+        HandleZoom();
     }
 
+    /// <summary>
+    /// This method is used when checking if the camera should be moved on a flat axis facing the map plane.
+    /// </summary>
     private void HandleMovement(){
         Vector3 inputMoveDirection = new Vector3(0,0,0);
         if (Input.GetKey(KeyCode.W))
@@ -48,7 +54,10 @@ public class CameraController : MonoBehaviour
         transform.position += moveVector * moveSpeed * Time.deltaTime;
     }
 
-    private void HandleRoation() {
+    /// <summary>
+    /// This method is used to alter the rotation of the CameraController object.
+    /// </summary>
+    private void HandleRotation() {
         Vector3 rotationVector = new Vector3(0,0,0);
 
         if (Input.GetKey(KeyCode.Q))
@@ -64,7 +73,11 @@ public class CameraController : MonoBehaviour
         transform.eulerAngles += rotationVector * rotationSpeed * Time.deltaTime;
     }
 
-    private void HandleZoon() {
+    /// <summary>
+    /// This method changes the zoom of the Cinermachine Virtual Camera. This camera is set to always face and follow the invisible camera controller object.
+    /// Therefore this function is adjusts the follow offset property of the cinemachine transposer.
+    /// </summary>
+    private void HandleZoom() {
         float zoomAmount = 1f;
         if (Input.mouseScrollDelta.y > 0)
         {

@@ -3,6 +3,10 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// This class <c>PathNode</c> models a node in used for the pathfinding algorithm. It keeps track of its own costs, its location, and
+/// the from which node this node was explored from in the algorithm.
+/// </summary>
 public class PathNode
 {
     private GridPosition gridPosition;

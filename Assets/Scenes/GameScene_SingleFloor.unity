@@ -1353,7 +1353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ce106d261c00a4ca13f68eec0bac8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionCamerObject: {fileID: 913343094}
+  actionCameraObject: {fileID: 913343094}
 --- !u!4 &599738701
 Transform:
   m_ObjectHideFlags: 0
@@ -3087,7 +3087,7 @@ Transform:
   m_GameObject: {fileID: 1306892891}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.02, y: 0, z: 2.84}
+  m_LocalPosition: {x: 22, y: 0.06, z: 2.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4545,7 +4545,7 @@ MonoBehaviour:
   width: 15
   height: 20
   cellSize: 2
-  maxAltitude: 2
+  maxFloors: 2
 --- !u!4 &2108952335
 Transform:
   m_ObjectHideFlags: 0

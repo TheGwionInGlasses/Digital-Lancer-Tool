@@ -1,7 +1,9 @@
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
+/// <summary>
+/// This class models an agent in the scene.
+/// </summary>
 public class Unit : MonoBehaviour
 {    private const int ACTION_POINTS_MAX = 2;
 
@@ -25,7 +27,7 @@ public class Unit : MonoBehaviour
     private void Start()
     {
         gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.AddUnitAtGridPosition(gridPosition, this);
+        LevelGrid.Instance.AddAgentAtGridPosition(gridPosition, this);
 
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
         healthSystem.OnDeath += HealthSystem_OnDeath;
@@ -41,7 +43,7 @@ public class Unit : MonoBehaviour
             GridPosition oldGridPosition = gridPosition;
             gridPosition = newGridPosition;
 
-            LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, newGridPosition);
+            LevelGrid.Instance.AgentMovedGridPosition(this, oldGridPosition, newGridPosition);
         }
     }
 
@@ -112,7 +114,7 @@ public class Unit : MonoBehaviour
 
     public void HealthSystem_OnDeath(object sender, EventArgs e)
     {
-        LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+        LevelGrid.Instance.RemoveAgentAtGridPosition(gridPosition, this);
 
         OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
 

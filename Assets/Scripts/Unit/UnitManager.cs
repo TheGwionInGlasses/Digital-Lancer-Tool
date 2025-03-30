@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The UnitManager is used to keep track of Unit groups.
+/// </summary>
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance { get; private set; }

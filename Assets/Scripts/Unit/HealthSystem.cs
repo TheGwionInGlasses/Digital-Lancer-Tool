@@ -1,6 +1,9 @@
 using UnityEngine;
 using System;
 
+/// <summary>
+/// This component is attached to agents and exists to track the health of the agent during the scene.
+/// </summary>
 public class HealthSystem : MonoBehaviour
 {
     public event EventHandler OnDeath;

@@ -2,6 +2,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class models the frontend logic for an action button.
+/// </summary>
 public class ActionButtonUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMeshPro;

@@ -1,10 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using System.Threading;
 
-
+/// <summary>
+/// This class represents a flat hexagonal grid. It is used to map the space on one floor. Multiple of these objects may be initiliased on the LevelGrid and
+/// Pathfinding script depending on the number of floors contained in a scene.
+/// The level grid is made up of a two dimensional array of TGridObject generics so that this code can be reused for Pathfinding singleton that uses Pathnodes
+/// or the LevelGrid singleton that uses GridObjects.
+/// </summary>
+/// <typeparam name="TGridObject"> A generic Grid Object. Either a Grid Object or a PathNode. </typeparam>
 public class GridSystemHex<TGridObject>
 {
     private const float VERITCAL_OFFSET_MULTIPLIER = 0.75f;
@@ -36,6 +40,14 @@ public class GridSystemHex<TGridObject>
         
     }
 
+    /// <summary>
+    /// This function translates a gridPosition into a Vector3 representing a world position. This is used primarily
+    /// to for functions such as agent movement where a Vector3 is used to set a target position to move to.
+    /// Both the Veritcal offset and the horizontal offset used here are floats for used to create an accurate Vector3
+    /// position from a hex in the hex grid given the not square shape of the grid.
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns>A vector3 compliment to the grid position</returns>
     public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
         return 
@@ -45,6 +57,15 @@ public class GridSystemHex<TGridObject>
             new Vector3(0, floor, 0) * floor_height;
     }
 
+    /// <summary>
+    /// This method is called to return the a Vector3 world position as an object. This is used primarily to translate mouse interactions
+    /// into grid positions for the logic.
+    /// Due to the shape of the hex, translating the world position into a grid position can give the wrong answer. To answer to this problem
+    /// is to find all of the rough grid positions neighbours and then turn them into world positions to find the grid position closest to
+    /// the worldPosition passed initially.
+    /// </summary>
+    /// <param name="worldPosition">A Vector3 representing a coordinate in space in the Unity scene</param>
+    /// <returns>The closest Grid position to the interaction.</returns>
     public GridPosition GetGridPosition(Vector3 worldPosition)
     {
         GridPosition roughXZ = new GridPosition(
@@ -53,7 +74,7 @@ public class GridSystemHex<TGridObject>
             floor
         );
 
-
+        // Offset to compensate for the right row shift on odd rows in an offset oddrow coordinate hex grid.
         bool oddRow = (roughXZ.z % 2) == 1;
         List<GridPosition> neighbourGridPositionList = new List<GridPosition>
         {
@@ -80,6 +101,10 @@ public class GridSystemHex<TGridObject>
     }
 
 
+    /// <summary>
+    /// This method instantiates a prefab of a debug object on every position in the grid. It looks a little funky for multi level scenes.
+    /// </summary>
+    /// <param name="debugPrefab">The prefab to instantiate on every grid position.</param>
     public void CreateDebugObject(Transform debugPrefab)
     {
         for (int x = 0; x < width; x++)
@@ -95,7 +120,12 @@ public class GridSystemHex<TGridObject>
         }
     }
     
-
+    /// <summary>
+    /// This function is used to return the object in the gridposition. Treats the grid position as an index
+    /// in the of objects.
+    /// </summary>
+    /// <param name="gridPosition"></param>
+    /// <returns></returns>
     public TGridObject GetGridObject(GridPosition gridPosition)
     {
         return gridObjectArray[gridPosition.x, gridPosition.z];
