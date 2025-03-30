@@ -1,7 +1,7 @@
 using System;
 
 /// <summary>
-/// This is a position on the Grid System using axial coordinates.
+/// This is a position on the Grid System using cube coordinates.
 /// </summary>
 public struct CubeGridPosition : IEquatable<CubeGridPosition>
 {
