@@ -8,12 +8,14 @@ public class GridObject
 {
     private GridSystemHex<GridObject> gridSystem;
     private GridPosition gridPosition;
+    private CubeGridPosition axialGridPosition;
     private List<Unit> unitList;
 
 
-    public GridObject(GridSystemHex<GridObject> gridSystem, GridPosition gridPosition)
+    public GridObject(GridSystemHex<GridObject> gridSystem, GridPosition gridPosition, CubeGridPosition axialGridPosition)
     {
         this.gridPosition = gridPosition;
+        this.axialGridPosition = axialGridPosition;
         this.gridSystem = gridSystem;
         unitList = new List<Unit>();
     }
@@ -40,7 +42,7 @@ public class GridObject
         {
             unitString += unit + "\n";
         }
-        return gridPosition.ToString() + "\n" + unitString;
+        return gridPosition.ToString() + "\n" + axialGridPosition.ToString() + "\n" + unitString;
     }
 
     public bool HasAnyUnit()

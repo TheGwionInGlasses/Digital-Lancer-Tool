@@ -20,7 +20,7 @@ public class GridSystemHex<TGridObject>
     private float floor_height;
     private TGridObject[,] gridObjectArray;
 
-    public GridSystemHex(int width, int height, float cellSize, int floor, float floor_height, Func<GridSystemHex<TGridObject>, GridPosition, TGridObject> createGridObject)
+    public GridSystemHex(int width, int height, float cellSize, int floor, float floor_height, Func<GridSystemHex<TGridObject>, GridPosition, CubeGridPosition, TGridObject> createGridObject)
     {
         this.width = width;
         this.height = height;
@@ -34,7 +34,8 @@ public class GridSystemHex<TGridObject>
             for (int z = 0; z < height; z++)
             {
                 GridPosition gridPosition = new GridPosition(x, z, floor);
-                gridObjectArray[x,z] = createGridObject(this, gridPosition);
+                CubeGridPosition cubeGridPosition = OffsetToCube(gridPosition);
+                gridObjectArray[x,z] = createGridObject(this, gridPosition, cubeGridPosition);
             }
         }
         
@@ -148,5 +149,23 @@ public class GridSystemHex<TGridObject>
     public int GetWidth()
     {
         return width;
+    }
+
+    public CubeGridPosition OffsetToCube(GridPosition gridPosition)
+    {
+        return new CubeGridPosition(
+            gridPosition.x - (gridPosition.z - (gridPosition.z&1)) / 2, 
+            gridPosition.z,
+            gridPosition.floor
+            );
+    }
+
+    public GridPosition CubeToOffset(CubeGridPosition cubeGridPosition)
+    {
+        return new GridPosition(
+            cubeGridPosition.q + (cubeGridPosition.r - (cubeGridPosition.r&1)) /2,
+            cubeGridPosition.r,
+            cubeGridPosition.floor
+        );
     }
 }
