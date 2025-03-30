@@ -34,8 +34,8 @@ public class GridSystemHex<TGridObject>
             for (int z = 0; z < height; z++)
             {
                 GridPosition gridPosition = new GridPosition(x, z, floor);
-                CubeGridPosition axialGridPosition = OffsetToAxial(gridPosition);
-                gridObjectArray[x,z] = createGridObject(this, gridPosition, axialGridPosition);
+                CubeGridPosition cubeGridPosition = OffsetToCube(gridPosition);
+                gridObjectArray[x,z] = createGridObject(this, gridPosition, cubeGridPosition);
             }
         }
         
@@ -151,7 +151,7 @@ public class GridSystemHex<TGridObject>
         return width;
     }
 
-    public CubeGridPosition OffsetToAxial(GridPosition gridPosition)
+    public CubeGridPosition OffsetToCube(GridPosition gridPosition)
     {
         return new CubeGridPosition(
             gridPosition.x - (gridPosition.z - (gridPosition.z&1)) / 2, 
@@ -160,12 +160,12 @@ public class GridSystemHex<TGridObject>
             );
     }
 
-    public GridPosition AxialToOffset(CubeGridPosition axialGridPosition)
+    public GridPosition CubeToOffset(CubeGridPosition cubeGridPosition)
     {
         return new GridPosition(
-            axialGridPosition.q + (axialGridPosition.r - (axialGridPosition.r&1)) /2,
-            axialGridPosition.r,
-            axialGridPosition.floor
+            cubeGridPosition.q + (cubeGridPosition.r - (cubeGridPosition.r&1)) /2,
+            cubeGridPosition.r,
+            cubeGridPosition.floor
         );
     }
 }
