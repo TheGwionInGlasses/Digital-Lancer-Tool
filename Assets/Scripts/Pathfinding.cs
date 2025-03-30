@@ -59,7 +59,7 @@ public class Pathfinding : MonoBehaviour
         for (int altitude = 0; altitude < max_alitude; altitude++)
         {
             GridSystemHex<PathNode> gridSystem = new GridSystemHex<PathNode>(width, height, cellSize, altitude, LevelGrid.FLOOR_HEIGHT,
-                (GridSystemHex<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
+                (GridSystemHex<PathNode> g, GridPosition gridPosition, CubeGridPosition cubeGridPosition) => new PathNode(gridPosition, cubeGridPosition));
             
             gridSystemList.Add(gridSystem);
             // Create a dubugging overlay for the pathfinding. Not recommeneded to be turned on if the LevelGrid deebug overlay is also active.

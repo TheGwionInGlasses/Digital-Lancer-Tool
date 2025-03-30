@@ -3,31 +3,31 @@ using System;
 /// <summary>
 /// This is a position on the Grid System using axial coordinates.
 /// </summary>
-public struct AxialGridPosition : IEquatable<AxialGridPosition>
+public struct CubeGridPosition : IEquatable<CubeGridPosition>
 {
     public int q;
     public int r;
     public int s;
     public int floor;
 
-    public AxialGridPosition(int x, int z, int s, int floor)
+    public CubeGridPosition(int q, int r, int floor)
     {
-        this.q = x;
-        this.r = z;
-        this.s = s;
+        this.q = q;
+        this.r = r;
+        this.s = -q-r;
         this.floor = floor;
     }
 
     public override bool Equals(object obj)
     {
-        return obj is AxialGridPosition position &&
+        return obj is CubeGridPosition position &&
             q == position.q && 
             r == position.r &&
             s == position.s &&
             floor == position.floor;
     }
 
-    public bool Equals(AxialGridPosition other)
+    public bool Equals(CubeGridPosition other)
     {   
         return this == other;
     }
@@ -43,7 +43,7 @@ public struct AxialGridPosition : IEquatable<AxialGridPosition>
 
     }
 
-    public static bool operator ==(AxialGridPosition a, AxialGridPosition b)
+    public static bool operator ==(CubeGridPosition a, CubeGridPosition b)
     {
         return a.q == b.q &&
             a.r == b.r && 
@@ -51,7 +51,7 @@ public struct AxialGridPosition : IEquatable<AxialGridPosition>
             a.floor == b.floor;
     }
 
-    public static bool operator !=(AxialGridPosition a, AxialGridPosition b)
+    public static bool operator !=(CubeGridPosition a, CubeGridPosition b)
     {
         return a.q != b.q ||
             a.r != b.r ||
@@ -59,21 +59,19 @@ public struct AxialGridPosition : IEquatable<AxialGridPosition>
             a.floor != b.floor;
     }
  
-    public static AxialGridPosition operator +(AxialGridPosition a, AxialGridPosition b)
+    public static CubeGridPosition operator +(CubeGridPosition a, CubeGridPosition b)
     {
-        return new AxialGridPosition(
+        return new CubeGridPosition(
             a.q + b.q, 
-            a.r + b.r, 
-            a.s + b.s, 
+            a.r + b.r,
             a.floor + b.floor);
     }
 
-    public static AxialGridPosition operator -(AxialGridPosition a, AxialGridPosition b)
+    public static CubeGridPosition operator -(CubeGridPosition a, CubeGridPosition b)
     {
-        return new AxialGridPosition(
+        return new CubeGridPosition(
             a.q - b.q, 
-            a.r - b.r, 
-            a.s - b.s,
+            a.r - b.r,
             a.floor - b.floor);
     }
 }

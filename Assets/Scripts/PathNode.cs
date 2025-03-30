@@ -10,15 +10,17 @@ using UnityEngine;
 public class PathNode
 {
     private GridPosition gridPosition;
+    private CubeGridPosition axialGridPosition;
     private int gCost;
     private int hCost;
     private int fCost;
     private PathNode cameFromPathNode;
     private bool isWalkable = true;
 
-    public PathNode(GridPosition gridPosition)
+    public PathNode(GridPosition gridPosition, CubeGridPosition axialGridPosition)
     {
         this.gridPosition = gridPosition;
+        this.axialGridPosition = axialGridPosition;
     }
 
     public override string ToString()

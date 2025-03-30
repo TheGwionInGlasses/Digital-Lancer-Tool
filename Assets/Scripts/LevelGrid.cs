@@ -47,14 +47,14 @@ public class LevelGrid : MonoBehaviour
         for (int floor = 0; floor < maxFloors; floor++)
         {
             GridSystemHex<GridObject> gridSystem = new GridSystemHex<GridObject>(width, height, cellSize, floor, FLOOR_HEIGHT,
-                (GridSystemHex<GridObject> g, GridPosition gridPosition) => new GridObject(g, gridPosition));
+                (GridSystemHex<GridObject> g, GridPosition gridPosition, CubeGridPosition axialGridPosition) => new GridObject(g, gridPosition, axialGridPosition));
             
             // Debug option that creates an overlay on every tile displaying its coordinates and the object occupying that space.
             // gridSystem.CreateDebugObject(gridObjectDebugPrefab);
 
             gridSystemList.Add(gridSystem);
         }
-        
+        gridSystemList[0].CreateDebugObject(gridObjectDebugPrefab);
     }
 
     /// <summary>
