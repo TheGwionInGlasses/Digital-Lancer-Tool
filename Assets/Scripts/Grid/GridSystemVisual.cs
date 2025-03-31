@@ -94,25 +94,38 @@ public class GridSystemVisual : MonoBehaviour
     public void ShowGridPositionRange(GridPosition gridPosition, int range, GridVisualType gridVisualType)
     {
         List<GridPosition> gridPositionList = new List<GridPosition>();
-        for (int x = -range; x <= range; x++ )
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
+        for (int altitude = -range; altitude <= range; altitude++)
         {
-            for (int z = -range; z <= range; z++)
+            for (int q = -range; q <= range; q++)
             {
-                GridPosition testGridPosition = gridPosition + new GridPosition(x, z, 0);
-
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                for (int r = Mathf.Max(-range, -q-range); r <= Mathf.Min(range, -q+range); r++)
                 {
-                    continue;
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
-
-                int pathfindingDistanceMultiplayer = 10;
-                if (Pathfinding.Instance.GetPathLengthIgnoreTerrain(gridPosition, testGridPosition) > range * pathfindingDistanceMultiplayer)
-                {
-                    continue;
-                }
-
-                gridPositionList.Add(testGridPosition);
             }
+        }
+        foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
+        {
+            CubeGridPosition cubeGridPosition = LevelGrid.Instance.OffsetToCube(gridPosition);
+
+            // As a result of some ambigious behaviour from the bastardisation of cube and offset coordinates, I need to double check the s for the cube is within range here
+            
+            CubeGridPosition testCubeGridPosition = cubeGridPosition + offsetCubeGridPosition;
+            GridPosition testGridPosition = LevelGrid.Instance.CubeToOffset(testCubeGridPosition);
+
+            if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            gridPositionList.Add(testGridPosition);
         }
         ShowGridPositionList(gridPositionList, gridVisualType);
     }

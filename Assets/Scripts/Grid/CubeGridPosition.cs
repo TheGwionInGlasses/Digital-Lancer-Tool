@@ -39,7 +39,7 @@ public struct CubeGridPosition : IEquatable<CubeGridPosition>
 
     public override string ToString()
     {
-        return "q: " + q + "; r: " + r + "; s: " + s + "; floor: " + floor;
+        return "q: " + q + "; r: " + r + "; s: " + s;
 
     }
 

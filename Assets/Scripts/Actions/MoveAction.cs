@@ -113,49 +113,66 @@ public class MoveAction : BaseAction
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
-        for (int x = -movementRange; x <= movementRange; x++)
+        CubeGridPosition unitCubeGridPosition = LevelGrid.Instance.OffsetToCube(unitGridPosition);
+
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
+        for (int q = -movementRange; q <= movementRange; q++)
         {
-            for (int z = -movementRange; z <= movementRange; z++)
+            for (int r = -movementRange; r <= movementRange; r++)
             {
-                for (int altitude = -movementRange; altitude <= movementRange; altitude++)
+                for (int s = -movementRange; s <= movementRange; s++)
                 {
-                    GridPosition offsetGridPosition = new GridPosition(x, z, altitude);
-                    GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                    if (q + r + s == 0)
                     {
-                        continue;
+                        for (int altitude = -movementRange; altitude <= movementRange; altitude++)
+                        {
+                            CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                            offsetCubeGridPositions.Add(offsetCubeGridPosition);
+                        }
                     }
-
-                    if (unitGridPosition == testGridPosition)
-                    {
-                        continue;
-                    }
-
-                    if (LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    if (!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    int pathfindingDistanceMultiplayer = 10;
-                    if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > movementRange * pathfindingDistanceMultiplayer)
-                    {
-                        continue;
-                    }
-
-                    ValidGridPositionList.Add(testGridPosition);
                 }
             }
+        }
+        foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
+        {
+            Debug.Log(offsetCubeGridPosition);
+            CubeGridPosition testCubePosition = offsetCubeGridPosition + unitCubeGridPosition;
+            //GridPosition offsetGridPosition = LevelGrid.Instance.CubeToOffset(offsetCubeGridPosition);
+            //GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+            GridPosition testGridPosition = LevelGrid.Instance.CubeToOffset(testCubePosition);
+
+            if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (unitGridPosition == testGridPosition)
+            {
+                continue;
+            }
+
+            if (LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
+            {
+                continue;
+            }
+
+            int pathfindingDistanceMultiplayer = 10;
+            if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > movementRange * pathfindingDistanceMultiplayer)
+            {
+                continue;
+            }
+
+            ValidGridPositionList.Add(testGridPosition);
         }
         
         return ValidGridPositionList;
