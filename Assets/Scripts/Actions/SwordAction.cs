@@ -13,6 +13,7 @@ public class SwordAction : BaseAction
     public event EventHandler OnSwordActionCompleted;
 
     [SerializeField] private int attackRange = 1;
+    [SerializeField] private int attackDamage = 100;
 
     private enum State
     {
@@ -66,6 +67,8 @@ public class SwordAction : BaseAction
         {
             case State.SwingingSwordBeforeHit:
                 // If we're moving to the next stage from the stage before slashing, damage the target and move to the next stage.
+                string logText = targetUnit + " slashed " + unit + "\n";
+                UpdateLog(logText);
                 state = State.SwingingSwordAfterHit;
                 float afterHitStateTime = 0.5f;
                 stateTimer = afterHitStateTime;

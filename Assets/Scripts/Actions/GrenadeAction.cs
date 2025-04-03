@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -88,6 +89,9 @@ public class GrenadeAction : BaseAction
     /// <param name="onActionComplete">A signature function to call when the action haas been completed.</param>
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
+        string logText = unit + "threw a granade." + "\n";
+        UpdateLog(logText);
+
         Transform grenadeProjectileTransform = 
             Instantiate(grenadeProjectilePrefab, unit.GetWorldPosition(), Quaternion.identity);
         GrenadeProjectile grenadeProjectile = grenadeProjectileTransform.GetComponent<GrenadeProjectile>();
