@@ -8,17 +8,22 @@ public class HealthSystem : MonoBehaviour
 {
     public event EventHandler OnDeath;
     public event EventHandler OnDamaged;
+    private Unit unit;
     [SerializeField] private int health = 100;
     private int healthMax = 100;
 
     private void Awake()
     {
         healthMax = health;
+        unit = GetComponent<Unit>();
     }
 
     public void Damage(int damageAmount)
     {
         health -= damageAmount;
+
+        string logText = unit + " was hurt for " + damageAmount + ".\n";
+        LogUI.Instance.UpdateLog(logText);
 
         if (health <= 0)
         {
@@ -29,6 +34,8 @@ public class HealthSystem : MonoBehaviour
 
         if (health == 0)
         {
+            logText = unit + " has been destroyed.";
+            LogUI.Instance.UpdateLog(logText);
             Die();
         }
     }

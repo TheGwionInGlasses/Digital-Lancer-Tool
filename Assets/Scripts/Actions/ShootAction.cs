@@ -25,7 +25,9 @@ public class ShootAction : BaseAction
 
     private State state;
     [SerializeField] private int attackRange = 8;
+    [SerializeField] private int attackDamage = 40;
     [SerializeField] private LayerMask obstaclesLayerMask;
+    
     private float stateTimer;
     private Unit targetUnit;
     private bool canShootBullet;
@@ -99,6 +101,9 @@ public class ShootAction : BaseAction
     /// </summary>
     private void Shoot()
     {
+        string logText = unit + " shot at " + targetUnit + ".\n";
+
+        UpdateLog(logText);
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
             targetUnit = targetUnit,
@@ -106,7 +111,7 @@ public class ShootAction : BaseAction
         });
 
         OnAnyShoot?.Invoke(this, EventArgs.Empty);
-        targetUnit.Damage(40);
+        targetUnit.Damage(attackDamage);
     } 
     
     /// <summary>

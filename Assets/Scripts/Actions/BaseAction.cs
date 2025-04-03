@@ -122,4 +122,6 @@ public abstract class BaseAction : MonoBehaviour
     {
         return unit;
     }
+
+    protected void UpdateLog(string logText) => LogUI.Instance.UpdateLog(logText);
 }
