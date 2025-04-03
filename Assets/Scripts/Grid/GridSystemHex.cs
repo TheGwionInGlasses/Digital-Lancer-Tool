@@ -141,6 +141,11 @@ public class GridSystemHex<TGridObject>
             gridPosition.floor == floor;
     }
 
+    public bool IsValidGridPosition(CubeGridPosition cubeGridPosition)
+    {
+        return IsValidGridPosition(CubeToOffset(cubeGridPosition));
+    }
+
     public int GetHeight()
     {
         return height;
@@ -151,21 +156,21 @@ public class GridSystemHex<TGridObject>
         return width;
     }
 
-    public CubeGridPosition OffsetToCube(GridPosition gridPosition)
-    {
-        return new CubeGridPosition(
-            gridPosition.x - (gridPosition.z - (gridPosition.z&1)) / 2, 
-            gridPosition.z,
-            gridPosition.floor
-            );
-    }
-
     public GridPosition CubeToOffset(CubeGridPosition cubeGridPosition)
     {
         return new GridPosition(
-            cubeGridPosition.q + (cubeGridPosition.r - (cubeGridPosition.r&1)) /2,
+            cubeGridPosition.q + (cubeGridPosition.r - (cubeGridPosition.r%2)) /2,
             cubeGridPosition.r,
             cubeGridPosition.floor
         );
+    }
+
+    public CubeGridPosition OffsetToCube(GridPosition gridPosition)
+    {
+        return new CubeGridPosition(
+            gridPosition.x - (gridPosition.z - (gridPosition.z%2)) / 2, 
+            gridPosition.z,
+            gridPosition.floor
+            );
     }
 }

@@ -138,60 +138,59 @@ public class ShootAction : BaseAction
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
-        // In a range around the unit...
-        for (int x = -attackRange; x <= attackRange; x++)
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
+        
+        for (int altitude = -attackRange; altitude <= attackRange; altitude++)
         {
-            for (int z = -attackRange; z <= attackRange; z++)
+            for (int q = -attackRange; q <= attackRange; q++)
             {
-                for (int altitude = -attackRange; altitude <- attackRange; altitude++ )
+                for (int r = Mathf.Max(-attackRange, -q-attackRange); r <= Mathf.Min(attackRange, -q+attackRange); r++)
                 {
-                    GridPosition offsetGridPosition = new GridPosition(x, z, 0);
-                    GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                    // If the test grid position is not in bounds, ignore it.
-                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    // If it is not in a heaxgonal range around the target. I'm not sure how better to explain this. This will be ditched once I introduce the axial grid position.
-                    int pathfindingDistanceMultiplayer = 10;
-                    if (Pathfinding.Instance.GetPathLengthIgnoreTerrain(unitGridPosition, testGridPosition) > attackRange * pathfindingDistanceMultiplayer)
-                    {
-                        continue;
-                    }
-
-                    // If the position is empty, it's not a valid shooting position
-                    if (!LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    // No friendly fire!
-                    Unit targetUnit = LevelGrid.Instance.GetAgentAtGridPosition(testGridPosition);
-                    if (targetUnit.IsEnemy() == unit.IsEnemy())
-                    {
-                        continue;
-                    }
-
-                    // Check if there's a clear line of site from the agent to the target.
-                    Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
-                    Vector3 shootDir = targetUnit.GetWorldPosition() - unitWorldPosition.normalized;
-                    float unitShoulderHeight = 1.7f;
-                    if (Physics.Raycast(
-                            unitWorldPosition + Vector3.up * unitShoulderHeight,
-                            shootDir,
-                            Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
-                            obstaclesLayerMask
-                    ))
-                    {   
-                        //Blocked by obstacle
-                        continue;
-                    }
-
-                    ValidGridPositionList.Add(testGridPosition);
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
             }
+        }
+        foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
+        {
+            GridPosition offsetGridPosition = LevelGrid.Instance.CubeToOffset(offsetCubeGridPosition);
+            GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
+
+            // If the test grid position is not in bounds, ignore it.
+            if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            // If the position is empty, it's not a valid shooting position
+            if (!LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            // No friendly fire!
+            Unit targetUnit = LevelGrid.Instance.GetAgentAtGridPosition(testGridPosition);
+            if (targetUnit.IsEnemy() == unit.IsEnemy())
+            {
+                continue;
+            }
+
+            // Check if there's a clear line of site from the agent to the target.
+            Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+            Vector3 shootDir = targetUnit.GetWorldPosition() - unitWorldPosition.normalized;
+            float unitShoulderHeight = 1.7f;
+            if (Physics.Raycast(
+                    unitWorldPosition + Vector3.up * unitShoulderHeight,
+                    shootDir,
+                    Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
+                    obstaclesLayerMask
+            ))
+            {   
+                //Blocked by obstacle
+                continue;
+            }
+
+            ValidGridPositionList.Add(testGridPosition);
         }
         
         return ValidGridPositionList;

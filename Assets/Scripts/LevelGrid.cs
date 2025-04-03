@@ -52,7 +52,7 @@ public class LevelGrid : MonoBehaviour
             gridSystemList.Add(gridSystem);
         }
         // Debug option that creates an overlay on every tile displaying its coordinates and the object occupying that space.
-        // gridSystemList[0].CreateDebugObject(gridObjectDebugPrefab);
+        gridSystemList[0].CreateDebugObject(gridObjectDebugPrefab);
     }
 
     /// <summary>
@@ -201,4 +201,6 @@ public class LevelGrid : MonoBehaviour
     /// </summary>
     /// <returns>I'll give you a hint, add a space between Get and Height</returns>
     public int GetWidth() => GetGridSystemHex(0).GetWidth();
+    public GridPosition CubeToOffset(CubeGridPosition cubeGridPosition) => GetGridSystemHex(0).CubeToOffset(cubeGridPosition);
+    public CubeGridPosition OffsetToCube(GridPosition gridPosition) => GetGridSystemHex(0).OffsetToCube(gridPosition);
 }

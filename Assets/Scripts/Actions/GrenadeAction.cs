@@ -42,31 +42,40 @@ public class GrenadeAction : BaseAction
     public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
-        for (int x = -attackRange; x <= attackRange; x++)
+        CubeGridPosition unitCubeGridPosition = LevelGrid.Instance.OffsetToCube(unitGridPosition);
+
+        for (int altitude = -attackRange; altitude <= attackRange; altitude++)
         {
-            for (int z = -attackRange; z <= attackRange; z++)
+            for (int q = -attackRange; q <= attackRange; q++)
             {
-                GridPosition offsetGridPosition = new GridPosition(x, z, 0);
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                // Check if the Grid Position is in the bounds of the level
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                for (int r = Mathf.Max(-attackRange, -q-attackRange); r <= Mathf.Min(attackRange, -q+attackRange); r++)
                 {
-                    continue;
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
-
-                // Check if the grid position is within range using the pathfinding script. Needs fixing.
-                // TODO: Use Axial coordinates rather than oddr coodrinates.
-                int pathfindingDistanceMultiplayer = 10;
-                if (Pathfinding.Instance.GetPathLengthIgnoreTerrain(unitGridPosition, testGridPosition) > attackRange * pathfindingDistanceMultiplayer)
-                {
-                    continue;
-                }
-
-                ValidGridPositionList.Add(testGridPosition);
             }
+        }
+        foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
+        {
+            CubeGridPosition testCubePosition = offsetCubeGridPosition + unitCubeGridPosition;
+            GridPosition testGridPosition = LevelGrid.Instance.CubeToOffset(testCubePosition);
+
+            // Check if the Grid Position is in the bounds of the level
+            if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            // Check the tile is not floating.
+            if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            ValidGridPositionList.Add(testGridPosition);
         }
         
         return ValidGridPositionList;

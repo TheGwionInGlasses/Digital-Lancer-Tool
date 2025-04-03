@@ -113,49 +113,57 @@ public class MoveAction : BaseAction
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
-        for (int x = -movementRange; x <= movementRange; x++)
+        CubeGridPosition unitCubeGridPosition = LevelGrid.Instance.OffsetToCube(unitGridPosition);
+
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
+        for (int altitude = -movementRange; altitude <= movementRange; altitude++)
         {
-            for (int z = -movementRange; z <= movementRange; z++)
+            for (int q = -movementRange; q <= movementRange; q++)
             {
-                for (int altitude = -movementRange; altitude <= movementRange; altitude++)
+                for (int r = Mathf.Max(-movementRange, -q-movementRange); r <= Mathf.Min(movementRange, -q+movementRange); r++)
                 {
-                    GridPosition offsetGridPosition = new GridPosition(x, z, altitude);
-                    GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                    if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    if (unitGridPosition == testGridPosition)
-                    {
-                        continue;
-                    }
-
-                    if (LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    if (!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
-                    {
-                        continue;
-                    }
-
-                    int pathfindingDistanceMultiplayer = 10;
-                    if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > movementRange * pathfindingDistanceMultiplayer)
-                    {
-                        continue;
-                    }
-
-                    ValidGridPositionList.Add(testGridPosition);
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
             }
+        }
+        foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
+        {
+            CubeGridPosition testCubePosition = offsetCubeGridPosition + unitCubeGridPosition;
+            GridPosition testGridPosition = LevelGrid.Instance.CubeToOffset(testCubePosition);
+
+            if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (unitGridPosition == testGridPosition)
+            {
+                continue;
+            }
+
+            if (LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            if (!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
+            {
+                continue;
+            }
+
+            int pathfindingDistanceMultiplayer = 10;
+            if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > movementRange * pathfindingDistanceMultiplayer)
+            {
+                continue;
+            }
+
+            ValidGridPositionList.Add(testGridPosition);
         }
         
         return ValidGridPositionList;
