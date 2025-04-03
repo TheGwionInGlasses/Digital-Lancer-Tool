@@ -50,10 +50,10 @@ public class GridSystemVisual : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        gridSystemVisualSingleArray = new GridSystemVisualSingle[LevelGrid.Instance.GetWidth(), LevelGrid.Instance.GetWidth(), LevelGrid.Instance.GetFloorAmount()];
+        gridSystemVisualSingleArray = new GridSystemVisualSingle[LevelGrid.Instance.GetWidth(), LevelGrid.Instance.GetHeight(), LevelGrid.Instance.GetFloorAmount()];
         for (int x = 0; x < LevelGrid.Instance.GetWidth(); x++)
         {
-            for (int z = 0; z < LevelGrid.Instance.GetWidth(); z++)
+            for (int z = 0; z < LevelGrid.Instance.GetHeight(); z++)
             {
                 for (int altitude = 0; altitude < LevelGrid.Instance.GetFloorAmount(); altitude++)
                 {
@@ -140,6 +140,7 @@ public class GridSystemVisual : MonoBehaviour
     {
         foreach (GridPosition gridPosition in gridPositionList)
         {
+            
             gridSystemVisualSingleArray[gridPosition.x, gridPosition.z, gridPosition.floor].Show(GetGridVisualTypeMaterial(gridVisualType));
         }
     }

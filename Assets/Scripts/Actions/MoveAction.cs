@@ -116,29 +116,20 @@ public class MoveAction : BaseAction
         CubeGridPosition unitCubeGridPosition = LevelGrid.Instance.OffsetToCube(unitGridPosition);
 
         List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
-        for (int q = -movementRange; q <= movementRange; q++)
+        for (int altitude = -movementRange; altitude <= movementRange; altitude++)
         {
-            for (int r = -movementRange; r <= movementRange; r++)
+            for (int q = -movementRange; q <= movementRange; q++)
             {
-                for (int s = -movementRange; s <= movementRange; s++)
+                for (int r = Mathf.Max(-movementRange, -q-movementRange); r <= Mathf.Min(movementRange, -q+movementRange); r++)
                 {
-                    if (q + r + s == 0)
-                    {
-                        for (int altitude = -movementRange; altitude <= movementRange; altitude++)
-                        {
-                            CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
-                            offsetCubeGridPositions.Add(offsetCubeGridPosition);
-                        }
-                    }
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
             }
         }
         foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
         {
-            Debug.Log(offsetCubeGridPosition);
             CubeGridPosition testCubePosition = offsetCubeGridPosition + unitCubeGridPosition;
-            //GridPosition offsetGridPosition = LevelGrid.Instance.CubeToOffset(offsetCubeGridPosition);
-            //GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
             GridPosition testGridPosition = LevelGrid.Instance.CubeToOffset(testCubePosition);
 
             if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))

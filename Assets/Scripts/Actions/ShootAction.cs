@@ -139,20 +139,15 @@ public class ShootAction : BaseAction
 
         GridPosition unitGridPosition = unit.GetGridPosition();
         List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
-        for (int q = -attackRange; q <= attackRange; q++)
+        
+        for (int altitude = -attackRange; altitude <= attackRange; altitude++)
         {
-            for (int r = -attackRange; r <= attackRange; r++)
+            for (int q = -attackRange; q <= attackRange; q++)
             {
-                for (int s = -attackRange; s <= attackRange; s++)
+                for (int r = Mathf.Max(-attackRange, -q-attackRange); r <= Mathf.Min(attackRange, -q+attackRange); r++)
                 {
-                    if (q + r + s == 0)
-                    {
-                        for (int altitude = -attackRange; altitude <= attackRange; altitude++)
-                        {
-                            CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
-                            offsetCubeGridPositions.Add(offsetCubeGridPosition);
-                        }
-                    }
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
             }
         }

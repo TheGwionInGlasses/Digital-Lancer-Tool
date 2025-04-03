@@ -109,43 +109,47 @@ public class SwordAction : BaseAction
     public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
-        for (int x = -attackRange; x <= attackRange; x++)
+        CubeGridPosition unitCubeGridPosition = LevelGrid.Instance.OffsetToCube(unitGridPosition);
+
+        for (int altitude = -attackRange; altitude <= attackRange; altitude++)
         {
-            for (int z = -attackRange; z <= attackRange; z++)
+            for (int q = -attackRange; q <= attackRange; q++)
             {
-                GridPosition offsetGridPosition = new GridPosition(x, z, 0);
-                GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
-
-                // Check if the position is within the bounds of the Level.
-                if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+                for (int r = Mathf.Max(-attackRange, -q-attackRange); r <= Mathf.Min(attackRange, -q+attackRange); r++)
                 {
-                    continue;
+                    CubeGridPosition offsetCubeGridPosition = new CubeGridPosition(q, r, altitude);
+                    offsetCubeGridPositions.Add(offsetCubeGridPosition);
                 }
-
-                // Check if the grid position contains an agent
-                if (!LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
-                {
-                    continue;
-                }
-
-                // Say no to friendly fire incidents in Lancer
-                Unit targetUnit = LevelGrid.Instance.GetAgentAtGridPosition(testGridPosition);
-                if (targetUnit.IsEnemy() == unit.IsEnemy())
-                {
-                    continue;
-                }
-
-                // To replace using axial coords.
-                int pathfindingDistanceMultiplayer = 10;
-                if (Pathfinding.Instance.GetPathLengthIgnoreTerrain(unitGridPosition, testGridPosition) > attackRange * pathfindingDistanceMultiplayer)
-                {
-                    continue;
-                }
-
-                ValidGridPositionList.Add(testGridPosition);
             }
+        }
+        foreach (CubeGridPosition offsetCubeGridPosition in offsetCubeGridPositions)
+        {
+            CubeGridPosition testCubePosition = offsetCubeGridPosition + unitCubeGridPosition;
+            GridPosition testGridPosition = LevelGrid.Instance.CubeToOffset(testCubePosition);
+
+            // Check if the position is within the bounds of the Level.
+            if (!LevelGrid.Instance.IsValidGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            // Check if the grid position contains an agent
+            if (!LevelGrid.Instance.HasAnyAgentOnGridPosition(testGridPosition))
+            {
+                continue;
+            }
+
+            // Say no to friendly fire incidents in Lancer
+            Unit targetUnit = LevelGrid.Instance.GetAgentAtGridPosition(testGridPosition);
+            if (targetUnit.IsEnemy() == unit.IsEnemy())
+            {
+                continue;
+            }
+
+            ValidGridPositionList.Add(testGridPosition);
         }
         
         return ValidGridPositionList;
