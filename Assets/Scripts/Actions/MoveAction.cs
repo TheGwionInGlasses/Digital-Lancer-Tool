@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +11,6 @@ public class MoveAction : BaseAction
     public event EventHandler OnStartMoving;
     public event EventHandler OnStopMoving;
     [SerializeField] private float moveSpeed = 4f;
-    [SerializeField] private int movementRange = 4;
 
     // Initially empty. This field stores the positions the agent should walk to in a path to its destination.
     private List<Vector3> positionList;
@@ -73,6 +73,9 @@ public class MoveAction : BaseAction
                 GridPosition targetGridPosition = LevelGrid.Instance.GetGridPosition(targetPosition);
                 GridPosition unitGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
 
+                //Terrain Logic
+                unit.SpendMovePoints(1);
+
                 if (targetGridPosition.floor != unitGridPosition.floor)
                 {
                     // If the target position is on a different floor, then the next move will be to a tile on a different floor.
@@ -91,7 +94,8 @@ public class MoveAction : BaseAction
     /// <param name="onActionComplete">The function signature of the function to call when the code is completed.</param>
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathLength);
+        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathTerrainCost);
+        unit.SpendMovePoints(pathTerrainCost / 10);
 
         currentPositionIndex = 0;
         positionList = new List<Vector3>();
@@ -110,12 +114,14 @@ public class MoveAction : BaseAction
     /// <returns>A list of grid positions the agent is allowed to move to</returns>
     public override List<GridPosition> GetValidActionGridPositionList()
     {
+        int movementRange = unit.GetMovePoints();
+        Debug.Log(movementRange);
+
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
+        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
 
         GridPosition unitGridPosition = unit.GetGridPosition();
         CubeGridPosition unitCubeGridPosition = LevelGrid.Instance.OffsetToCube(unitGridPosition);
-
-        List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
         for (int altitude = -movementRange; altitude <= movementRange; altitude++)
         {
             for (int q = -movementRange; q <= movementRange; q++)
@@ -157,8 +163,9 @@ public class MoveAction : BaseAction
                 continue;
             }
 
-            int pathfindingDistanceMultiplayer = 10;
-            if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > movementRange * pathfindingDistanceMultiplayer)
+            int terrainCost;
+            Pathfinding.Instance.FindPath(unitGridPosition, testGridPosition, out terrainCost);
+            if (terrainCost > movementRange)
             {
                 continue;
             }
@@ -192,5 +199,10 @@ public class MoveAction : BaseAction
             gridPosition = gridPosition,
             actionValue = targetCountAtGridPosition * 10,
         };
+    }
+
+    public override int GetActionPointsCost()
+    {
+        return 0;
     }
 }

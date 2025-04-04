@@ -62,9 +62,10 @@ public class Pathfinding : MonoBehaviour
                 (GridSystemHex<PathNode> g, GridPosition gridPosition, CubeGridPosition cubeGridPosition) => new PathNode(gridPosition, cubeGridPosition));
             
             gridSystemList.Add(gridSystem);
-            // Create a dubugging overlay for the pathfinding. Not recommeneded to be turned on if the LevelGrid deebug overlay is also active.
-            //gridSystem.CreateDebugObject(gridDebugObjectPrefab);
+            
         }
+        // Debug option that creates an overlay on every tile displaying its coordinates and the object occupying that space.
+        // gridSystemList[0].CreateDebugObject(gridDebugObjectPrefab);
         
         
 
@@ -120,11 +121,12 @@ public class Pathfinding : MonoBehaviour
     /// </summary>
     /// <param name="startGridPosition">The origin</param>
     /// <param name="endGridPosition">The destination</param>
-    /// <param name="pathLength">The length of the path from origin to destination</param>
+    /// <param name="pathTerrainCost">The length of the path from origin to destination</param>
     /// <param name="ignoreTerrain">Whether to count for terrain</param>
     /// <returns></returns>
-    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength, bool ignoreTerrain = false)
+    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathTerrainCost)
     {
+        pathTerrainCost = 0;
         List<PathNode> openList = new List<PathNode>();
         List<PathNode> closedList = new List<PathNode>();
 
@@ -163,8 +165,9 @@ public class Pathfinding : MonoBehaviour
             // If the current node is the destination, return a path to the destination
             if (currentNode == endNode)
             {
-                pathLength = endNode.GetFCost();
-                return CalculatePath(endNode);
+                List<GridPosition> path = CalculatePath(endNode);
+                pathTerrainCost = CalculatePathTerrainCost(path);
+                return path;
             }
 
             openList.Remove(currentNode);
@@ -179,7 +182,7 @@ public class Pathfinding : MonoBehaviour
                 }
 
                 // If the neighbour is not walkable, ignore the neighbour
-                if (!neighbourNode.IsWalkable() && !ignoreTerrain)
+                if (!neighbourNode.IsWalkable())
                 {
                     closedList.Add(neighbourNode);
                     continue;
@@ -192,7 +195,7 @@ public class Pathfinding : MonoBehaviour
                 {
                     neighbourNode.SetCameFromPathNode(currentNode);
                     neighbourNode.SetGCost(tentativeGCost);
-                    neighbourNode.SetHCost(ignoreTerrain ? 0 : CalculateHeuristicDistance(neighbourNode.GetGridPosition(), endGridPosition));
+                    neighbourNode.SetHCost(CalculateHeuristicDistance(neighbourNode.GetGridPosition(), endGridPosition));
                     neighbourNode.CalculateFCost();
 
                     if (!openList.Contains(neighbourNode))
@@ -203,7 +206,7 @@ public class Pathfinding : MonoBehaviour
             }
         }
         // No Path Found
-        pathLength = 0;
+        pathTerrainCost = 0;
         return null;
     }
 
@@ -397,6 +400,30 @@ public class Pathfinding : MonoBehaviour
         return gridPositionList;
     }
 
+    private int CalculatePathTerrainCost(List<GridPosition> gridPositions)
+    {
+        int terrainCost = 0;
+        foreach (GridPosition gridPosition in gridPositions)
+        {
+            
+            terrainCost += CalculateToNodeTerrainCost(gridPosition);
+        }
+        return terrainCost;
+    }
+
+    public int CalculateToNodeTerrainCost(GridPosition gridPosition)
+    {
+        PathNode pathNode = GetNode(gridPosition.x, gridPosition.z, gridPosition.floor);
+        if (pathNode.GetCameFromPathNode() == null)
+        {
+            return 0;
+        } else
+        {
+            return 1;
+        }
+        
+    }
+
     /// <summary>
     /// Method used to check if a gridposition is walkable.
     /// </summary>
@@ -416,29 +443,5 @@ public class Pathfinding : MonoBehaviour
     public bool HasPath(GridPosition startGridPosition, GridPosition endGridPosition)
     {
         return FindPath(startGridPosition, endGridPosition, out int pathLength) != null;
-    }
-
-    /// <summary>
-    /// This method is used to check the length of the a path between two gridpositions
-    /// </summary>
-    /// <param name="startGridPosition">The origin</param>
-    /// <param name="endGridPosition">The destination</param>
-    /// <returns>The length of the path counted in gridpositions traversed to reach the destination</returns>
-    public int GetPathLength(GridPosition startGridPosition, GridPosition endGridPosition)
-    {
-        FindPath(startGridPosition, endGridPosition, out int pathLength);
-        return pathLength;
-    }
-
-    /// <summary>
-    /// This method is used to check the length of a path between two gridpositions ignoring obstacles and terrain cost.
-    /// </summary>
-    /// <param name="startGridPosition">The origin</param>
-    /// <param name="endGridPosition">The destination</param>
-    /// <returns>The length of the path counted in gridpositions traversed to reach the destination</returns>
-    public int GetPathLengthIgnoreTerrain(GridPosition startGridPosition, GridPosition endGridPosition)
-    {
-        FindPath(startGridPosition, endGridPosition, out int pathLength, true);
-        return pathLength;
     }
 }
