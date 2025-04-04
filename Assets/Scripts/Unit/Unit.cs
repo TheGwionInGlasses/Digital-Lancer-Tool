@@ -5,7 +5,10 @@ using UnityEngine;
 /// This class models an agent in the scene.
 /// </summary>
 public class Unit : MonoBehaviour
-{    private const int ACTION_POINTS_MAX = 8;
+{    
+    [SerializeField] private const int ACTION_POINTS_MAX = 2;
+    [SerializeField] private const int MOVE_POINTS_MAX = 4;
+
 
     public static event EventHandler OnAnyActionPointsChanged;
     public static event EventHandler OnAnyUnitSpawned;
@@ -17,6 +20,7 @@ public class Unit : MonoBehaviour
     private HealthSystem healthSystem;
     private BaseAction[] baseActionArray;
     private int actionPoints = ACTION_POINTS_MAX;
+    private int movePoints = MOVE_POINTS_MAX;
 
     private void Awake()
     {
@@ -77,13 +81,19 @@ public class Unit : MonoBehaviour
 
     public bool TrySpendActionPointsToTakeAction(BaseAction baseAction)
     {
-        if (CanSpendActionPointsToTakeAction(baseAction))
+        switch(baseAction)
         {
-            SpendActionPoints(baseAction.GetActionPointsCost());
-            return true;
-        } else
-        {
-            return false;
+            default:
+                if (CanSpendActionPointsToTakeAction(baseAction))
+                {
+                    SpendActionPoints(baseAction.GetActionPointsCost());
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            case MoveAction moveAction:
+                return true;
         }
     }
 
@@ -92,9 +102,20 @@ public class Unit : MonoBehaviour
         return actionPoints >= baseAction.GetActionPointsCost();
     }
 
+    public bool CanSpendMovePointsToMove(int pathLength)
+    {
+        return movePoints >= pathLength;
+    }
+
     private void SpendActionPoints(int amount) 
     {
         actionPoints -= amount;
+        OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SpendMovePoints(int amount)
+    {
+        movePoints -= amount;
         OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -103,11 +124,17 @@ public class Unit : MonoBehaviour
         return actionPoints;
     }
 
+    public int GetMovePoints()
+    {
+        return movePoints;
+    }
+
     public void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
         if(IsEnemy() != TurnSystem.Instance.IsPlayerTurn())
         {
         actionPoints = ACTION_POINTS_MAX;
+        movePoints = MOVE_POINTS_MAX;
         OnAnyActionPointsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
