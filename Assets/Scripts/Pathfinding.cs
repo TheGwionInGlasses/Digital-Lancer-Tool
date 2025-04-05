@@ -89,7 +89,12 @@ public class Pathfinding : MonoBehaviour
                         raycastOffsetDistance * 2, 
                         floorLayerMask))
                     {
+                        // For every floor under this position, set as unwalkeable.
                         GetNode(x, z, altitude).SetIsWalkable(true);
+                        for (int i = 0; i < altitude; i++)
+                        {
+                            GetNode(x, z, i).SetIsWalkable(false);
+                        }
                     }
 
                     // If these is an obstacle on the Pathnode, set the pathnode to be unwalkable.
