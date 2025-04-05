@@ -11,6 +11,7 @@ public class PathNode
 {
     private GridPosition gridPosition;
     private CubeGridPosition axialGridPosition;
+    private int terrainCost;
     private int gCost;
     private int hCost;
     private int fCost;
@@ -26,6 +27,11 @@ public class PathNode
     public override string ToString()
     {
         return gridPosition.ToString();
+    }
+
+    public int GetTerrainCost()
+    {
+        return terrainCost;
     }
 
     public int GetGCost()
@@ -51,6 +57,11 @@ public class PathNode
     public void SetHCost(int hCost)
     {
         this.hCost = hCost;
+    }
+
+    public void SetTerrainCost(int terrainCost)
+    {
+        this.terrainCost = terrainCost;
     }
 
     public void CalculateFCost()
