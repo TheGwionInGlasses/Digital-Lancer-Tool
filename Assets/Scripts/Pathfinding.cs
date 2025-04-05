@@ -14,6 +14,7 @@ public class Pathfinding : MonoBehaviour
     [SerializeField] private Transform gridDebugObjectPrefab;
     [SerializeField] private LayerMask obstaclesLayerMark;
     [SerializeField] private LayerMask floorLayerMask;
+    [SerializeField] private LayerMask difficultTerrain;
     [SerializeField] private Transform pathfindingLinksContainer;
 
     // These parmaters determine the size and shape of the coordinate space in the Pathfinding class. They are determined in the <c>LevelGrid</c> class
@@ -91,10 +92,21 @@ public class Pathfinding : MonoBehaviour
                     {
                         // For every floor under this position, set as unwalkeable.
                         GetNode(x, z, altitude).SetIsWalkable(true);
+                        GetNode(x, z, altitude).SetTerrainCost(1);
                         for (int i = 0; i < altitude; i++)
                         {
                             GetNode(x, z, i).SetIsWalkable(false);
                         }
+                    }
+
+                    // If there is difficult terrain beneath the object, set so in the PathNode.
+                    if (Physics.Raycast(
+                        worldPosition + Vector3.up * raycastOffsetDistance, 
+                        Vector3.down, 
+                        raycastOffsetDistance * 2, 
+                        difficultTerrain))
+                    {
+                        GetNode(x, z, altitude).SetTerrainCost(2);
                     }
 
                     // If these is an obstacle on the Pathnode, set the pathnode to be unwalkable.
@@ -424,9 +436,13 @@ public class Pathfinding : MonoBehaviour
             return 0;
         } else
         {
-            return 1;
+            PathNode cameFrom = pathNode.GetCameFromPathNode();
+            if (pathNode.GetGridPosition().floor > cameFrom.GetGridPosition().floor)
+            {
+                return pathNode.GetTerrainCost() * 2;
+            }
+            return pathNode.GetTerrainCost();
         }
-        
     }
 
     /// <summary>

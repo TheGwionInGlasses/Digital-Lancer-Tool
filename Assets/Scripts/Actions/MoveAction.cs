@@ -73,8 +73,8 @@ public class MoveAction : BaseAction
                 GridPosition targetGridPosition = LevelGrid.Instance.GetGridPosition(targetPosition);
                 GridPosition unitGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
 
-                //Terrain Logic
-                unit.SpendMovePoints(1);
+                //This subtracts the cost of moving to the next target grid position from the units movement point pool.
+                unit.SpendMovePoints(Pathfinding.Instance.CalculateToNodeTerrainCost(targetGridPosition));
 
                 if (targetGridPosition.floor != unitGridPosition.floor)
                 {
@@ -115,7 +115,6 @@ public class MoveAction : BaseAction
     public override List<GridPosition> GetValidActionGridPositionList()
     {
         int movementRange = unit.GetMovePoints();
-        Debug.Log(movementRange);
 
         List<GridPosition> ValidGridPositionList = new List<GridPosition>();
         List<CubeGridPosition> offsetCubeGridPositions = new List<CubeGridPosition>();
